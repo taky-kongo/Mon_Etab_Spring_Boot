@@ -3,6 +3,8 @@ package ci.digitalacademy.monetab.services.impl;
 import ci.digitalacademy.monetab.models.User;
 import ci.digitalacademy.monetab.repositories.UserRepository;
 import ci.digitalacademy.monetab.services.UserService;
+import ci.digitalacademy.monetab.services.dto.UserDTO;
+import ci.digitalacademy.monetab.services.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,13 +23,15 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User save(User user) {;
-        return userRepository.save(user);
+    public UserDTO save(UserDTO userDTO) {
+        User user = UserMapper.toEntity(userDTO);
+        user = userRepository.save(user);
+        return UserMapper.toDto(user);
     }
 
     @Override
-    public User update(User user) {
-        log.debug("Request to update user {} ", user);
+    public UserDTO update(UserDTO userDTO) {
+        log.debug("Request to update user {} ", userDTO);
 
         //return findOne(user.getId())
         //        .map(existingUser -> {  // Fonction lambda permettant de modifier l'utilisateur
@@ -38,27 +42,27 @@ public class UserServiceImpl implements UserService {
         //            return save(existingUser);
         //        }).orElseThrow(() -> new IllegalArgumentException()); // Lever une exception en cas d'innexistance
 
-        Optional<User> optionalUser = findOne(user.getId());
-        if (optionalUser.isPresent()) {
-            User userToUpdate = optionalUser.get();
-            userToUpdate.setPseudo(user.getPseudo());
-            userToUpdate.setPassword(user.getPassword());
-            return save(userToUpdate);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        return findOne(userDTO.getId()).map(userExisting -> {
+            userExisting.setPseudo(userDTO.getPseudo());
+            userExisting.setPassword(userDTO.getPassword());
+            return save(userExisting);
+        }).orElseThrow(() -> new IllegalArgumentException());
     }
 
     @Override
-    public Optional<User> findOne(Long id) {
+    public Optional<UserDTO> findOne(Long id) {
         log.debug("Request to find one user {} ", id);
-        return userRepository.findById(id);
+        return userRepository.findById(id).map(student -> {
+            return UserMapper.toDto(student);
+        });
     }
 
     @Override
-    public List<User> findAll() {
+    public List<UserDTO> findAll() {
         log.debug("Request to find all users");
-        return userRepository.findAll();
+        return userRepository.findAll().stream().map(student -> {
+            return UserMapper.toDto(student);
+        }).toList();
     }
 
     @Override

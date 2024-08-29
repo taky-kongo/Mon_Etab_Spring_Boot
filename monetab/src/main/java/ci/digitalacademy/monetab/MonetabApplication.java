@@ -2,6 +2,9 @@ package ci.digitalacademy.monetab;
 
 import ci.digitalacademy.monetab.models.*;
 import ci.digitalacademy.monetab.services.*;
+import ci.digitalacademy.monetab.services.dto.StudentDTO;
+import ci.digitalacademy.monetab.services.dto.TeacherDTO;
+import ci.digitalacademy.monetab.services.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -144,13 +147,13 @@ public class MonetabApplication implements CommandLineRunner {
         Set<FicheNote> listDesFicheNoteDeTeacher = teachers.get(0).getFicheNotes();
         System.out.println(listDesFicheNoteDeTeacher.toString());*/
 
-        Student student = new Student();
+        StudentDTO student = new StudentDTO();
         student.setMatricule("AB-001");
         student.setEmail("demo@yopmail.com");
         student.setFirstName("John");
         student.setLastName("Smith");
 
-        Student student2 = new Student();
+        StudentDTO student2 = new StudentDTO();
         student2.setMatricule("AB-002");
         student2.setEmail("demo1@yopmail.com");
         student2.setFirstName("Millot");
@@ -159,13 +162,13 @@ public class MonetabApplication implements CommandLineRunner {
         studentService.save(student);
         studentService.save(student2);
 
-        Teacher teacher = new Teacher();
+        TeacherDTO teacher = new TeacherDTO();
         teacher.setLastName("Kobenan");
         teacher.setFirstName("Akoua");
         teacher.setEmail("kobakoua@yopmail.com");
         teacher.setMatiere("SVT");
 
-        Teacher teacher2 = new Teacher();
+        TeacherDTO teacher2 = new TeacherDTO();
         teacher2.setLastName("Koudou");
         teacher2.setFirstName("Gaspar");
         teacher2.setEmail("gaspar@yopmail.com");
@@ -174,12 +177,12 @@ public class MonetabApplication implements CommandLineRunner {
         teacherService.save(teacher);
         teacherService.save(teacher2);
 
-        User user = new User();
+        UserDTO user = new UserDTO();
         user.setPseudo("Cisco");
         user.setPassword("=)àeeungbqg(");
         user.setCreationDate(Instant.now());
 
-        User user2 = new User();
+        UserDTO user2 = new UserDTO();
         user2.setPseudo("Commando");
         user2.setPassword("ueueueueknf");
         user2.setCreationDate(Instant.now());

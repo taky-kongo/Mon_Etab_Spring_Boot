@@ -2,6 +2,7 @@ package ci.digitalacademy.monetab.controller;
 
 import ci.digitalacademy.monetab.models.Teacher;
 import ci.digitalacademy.monetab.services.TeacherService;
+import ci.digitalacademy.monetab.services.dto.TeacherDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class TeachersController {
 
     @GetMapping
     public String showTeacherPage(Model model){
-        List<Teacher> teachers = teacherService.findAll();
+        List<TeacherDTO> teachers = teacherService.findAll();
         model.addAttribute("teachers", teachers);
         return "teachers/list";
     }
@@ -32,12 +33,12 @@ public class TeachersController {
     @GetMapping("/add")
     public String showAddTeacherForms(Model model) {
         log.debug("Request to show add teacher forms");
-        model.addAttribute("teacher", new Teacher());
+        model.addAttribute("teacher", new TeacherDTO());
         return "teachers/forms";
     }
 
     @PostMapping
-    public String saveTeacher(Teacher teacher) {
+    public String saveTeacher(TeacherDTO teacher) {
         log.debug("Request to save teacher : {}", teacher);
         teacherService.save(teacher);
         return "redirect:/teachers";
@@ -45,7 +46,7 @@ public class TeachersController {
 
     @GetMapping("/{id}")
     public String showUpdateTeacherForms(Model model, @PathVariable Long id) {
-        Optional<Teacher>  teacher = teacherService.findOne(id);
+        Optional<TeacherDTO>  teacher = teacherService.findOne(id);
 
         if (teacher.isPresent()) {
             model.addAttribute("teacher", teacher.get());

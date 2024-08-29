@@ -3,6 +3,8 @@ package ci.digitalacademy.monetab.services.impl;
 import ci.digitalacademy.monetab.models.Teacher;
 import ci.digitalacademy.monetab.repositories.TeacherRepository;
 import ci.digitalacademy.monetab.services.TeacherService;
+import ci.digitalacademy.monetab.services.dto.TeacherDTO;
+import ci.digitalacademy.monetab.services.mapper.TeacherMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,35 +20,40 @@ public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepository teacherRepository;
 
     @Override
-    public Teacher save(Teacher teacher) {
-        return teacherRepository.save(teacher);
+    public TeacherDTO save(TeacherDTO teacherDTO) {
+        Teacher teacher = TeacherMapper.toEntity(teacherDTO);
+        teacher = teacherRepository.save(teacher);
+        return TeacherMapper.toDto(teacher);
     }
 
     @Override
-    public Teacher update(Teacher teacher) {
-        log.debug("Request to update teacher {} ", teacher);
+    public TeacherDTO update(TeacherDTO teacherDTO) {
+        log.debug("Request to update teacher {} ", teacherDTO);
 
-        Optional<Teacher> optionalTeacher = findOne(teacher.getId());
-
-        if(optionalTeacher.isPresent()) {
-            Teacher teacherToUpdate = optionalTeacher.get();
-            teacherToUpdate.setMatiere(teacher.getMatiere());
-            return save(teacherToUpdate);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        return findOne(teacherDTO.getId()).map(teacher -> {
+            teacher.setMatiere(teacherDTO.getMatiere());
+            teacher.setGenre(teacherDTO.getGenre());
+            teacher.setEmail(teacherDTO.getEmail());
+            teacher.setFirstName(teacherDTO.getFirstName());
+            teacher.setLastName(teacherDTO.getLastName());
+            return save(teacher);
+        }).orElseThrow(() -> new RuntimeException());
     }
 
     @Override
-    public Optional<Teacher> findOne(Long id) {
+    public Optional<TeacherDTO> findOne(Long id) {
         log.debug("Request to find one teacher {}", id);
-        return teacherRepository.findById(id);
+        return teacherRepository.findById(id).map( teacher -> {
+            return TeacherMapper.toDto(teacher);
+        });
     }
 
     @Override
-    public List<Teacher> findAll() {
+    public List<TeacherDTO> findAll() {
         log.debug("Request to find all teachers");
-        return teacherRepository.findAll();
+        return teacherRepository.findAll().stream().map(student -> {
+            return TeacherMapper.toDto(student);
+        }).toList();
     }
 
     @Override
