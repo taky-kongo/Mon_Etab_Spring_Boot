@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PersonDTO {
+public abstract class PersonDTO {
 
     private Long id;
 
@@ -15,4 +15,6 @@ public class PersonDTO {
     private String lastName;
 
     private String email;
+
+    private AddressDTO addressDTO;
 }

@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,5 +28,8 @@ public abstract class Person {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
 
 }

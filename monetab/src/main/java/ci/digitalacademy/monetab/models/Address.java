@@ -25,17 +25,6 @@ public class Address extends AbstractAuditing {
     @Column(name = "struct", nullable = false)
     private String struct;
 
-    @OneToOne(mappedBy = "address")
-    private User user;
-
-    @Override
-    public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                ", struct='" + struct + '\'' +
-                ", user=" + user.getPseudo() +
-                '}';
-    }
+//    @OneToOne(mappedBy = "address")
+//    private User user;
 }

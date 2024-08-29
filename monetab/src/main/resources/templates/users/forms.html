@@ -29,7 +29,7 @@
         <a th:href="@{/users}">
             <button class="retour">Retour</button>
         </a>
-        <h1 th:text="${user.id == null} ? 'Ajouter un Utilisateur' : 'Modifier un Utilisateur'"></h1>
+        <!--<h1 th:text="${user.id == null} ? 'Ajouter un Utilisateur' : 'Modifier un Utilisateur'"></h1>-->
         <form th:object="${user}" th:action="@{/users}" method="Post">
 
             <input th:field="${user.id}" type="text" hidden>

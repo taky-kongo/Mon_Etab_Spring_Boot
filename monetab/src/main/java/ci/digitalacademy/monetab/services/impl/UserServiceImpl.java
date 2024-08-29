@@ -19,14 +19,16 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final UserMapper userMapper;
+
     // private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 
     @Override
     public UserDTO save(UserDTO userDTO) {
-        User user = UserMapper.toEntity(userDTO);
+        User user = userMapper.toEntity(userDTO);
         user = userRepository.save(user);
-        return UserMapper.toDto(user);
+        return userMapper.toDto(user);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDTO> findOne(Long id) {
         log.debug("Request to find one user {} ", id);
         return userRepository.findById(id).map(student -> {
-            return UserMapper.toDto(student);
+            return userMapper.toDto(student);
         });
     }
 
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> findAll() {
         log.debug("Request to find all users");
         return userRepository.findAll().stream().map(student -> {
-            return UserMapper.toDto(student);
+            return userMapper.toDto(student);
         }).toList();
     }
 
